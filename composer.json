@@ -1,0 +1,28 @@
+{
+    "name": "egretos/orio",
+    "description": "Orio is a good OrientDB query builder based on the PHPOrient.",
+    "version": "v1.0.0",
+    "keywords": [
+        "orientdb",
+        "orient db",
+        "orientechnologies"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Melnichuk",
+            "email": "egretos@outlook.com",
+            "homepage": "https://github.com/egretos",
+            "role": "Owner, Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "psr/log": "~1.0",
+        "ostico/phporient": ">=1.2.5"
+    },
+    "autoload": {
+        "psr-4": {"Orio\\": "src"}
+    }
+}
