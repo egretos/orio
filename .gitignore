@@ -1,4 +1,6 @@
 vendor/
 .idea/
 
+config/
+
 /index.php

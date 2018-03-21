@@ -1,6 +1,6 @@
 <?php
 
-namespace orio;
+namespace Orio;
 
 /**
  * Class ModelArray

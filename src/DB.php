@@ -1,10 +1,10 @@
 <?php
 
-namespace orio;
+namespace Orio;
 
 use PhpOrient\PhpOrient;
-use orio\ModelArray;
-use orio\Qbuilder;
+use Orio\ModelArray;
+use Orio\Qbuilder;
 
 /**
  * Class DB

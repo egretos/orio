@@ -1,6 +1,6 @@
 <?php
 
-namespace orio;
+namespace Orio;
 
 use PhpOrient\Protocols\Binary\Data\Bag;
 use PhpOrient\Protocols\Binary\Data\ID;
