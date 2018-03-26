@@ -12,6 +12,7 @@ class Qbuilder
 {
     public $action;
     public $actionParams = [];
+    public $selectVars = [];
 
     public $filters = [];
 
@@ -20,7 +21,8 @@ class Qbuilder
       * @param $properties array
       * @return $this Qbuilder
       */
-    public function select($from = 'V', $properties = []) {
+    public function select($from = 'V', $properties = [])
+    {
         $this->action = 'select';
         $this->actionParams[] = 'from ' . addslashes($from);
         return $this;
@@ -32,7 +34,8 @@ class Qbuilder
      * @param $item2 string
      * @return $this Qbuilder
      */
-    public function addCondition($item, $operator, $item2) {
+    public function addCondition($item, $operator, $item2)
+    {
         $this->actionParams[] = 'where ' .
             addslashes($item) . ' ' .
             $operator . ' \'' .
@@ -43,7 +46,8 @@ class Qbuilder
     /**
      * @return string QueryString
      */
-    public function build() {
+    public function build()
+    {
         $ret = $this->action;
         foreach ($this->actionParams as $name => $value) {
             $ret = $ret . ' ' . $value;

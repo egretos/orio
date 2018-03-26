@@ -3,8 +3,6 @@
 namespace Orio;
 
 use PhpOrient\PhpOrient;
-use Orio\ModelArray;
-use Orio\Qbuilder;
 
 /**
  * Class DB
@@ -31,11 +29,13 @@ class DB
     /**
      * @return PhpOrient
      */
-    public static function getClient() {
+    public static function getClient()
+    {
         return DB::$client;
     }
 
-    public static function init($settings) {
+    public static function init($settings)
+    {
 
         $client = new PhpOrient();
         $client->username = $settings['username'];
@@ -54,7 +54,8 @@ class DB
      * @param $query string
      * @return array
      */
-    public static function command($query) {
+    public static function command($query)
+    {
         $client = DB::getClient();
         $data = $client->query($query);
 
@@ -65,7 +66,8 @@ class DB
      * @param $class string
      * @return DB
      */
-    public static function select($class) {
+    public static function select($class)
+    {
         $DB = new DB(DB::$settings);
 
         $DB->qBuilder->select($class);
@@ -78,10 +80,10 @@ class DB
      * @param $item2 | $condition string
      * @return $this DB
      */
-    public function where() {
-
+    public function where()
+    {
         $cnt = func_num_args();
-        if( $cnt == 2) {
+        if ($cnt == 2) {
             $this->qBuilder->addCondition(
                 func_get_arg(0),
                 '=',
@@ -101,12 +103,13 @@ class DB
     /**
      * @return ModelArray
      */
-    public function get() {
+    public function get()
+    {
         $QueryString = $this->qBuilder->build();
         $data = DB::command($QueryString);
         $ret = new ModelArray();
         $ret->setArray($data);
 
-        return $data;
+        return $ret;
     }
 }
