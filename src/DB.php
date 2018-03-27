@@ -3,6 +3,7 @@
 namespace Orio;
 
 use PhpOrient\PhpOrient;
+use PhpOrient\Protocols\Binary\Data\ID;
 
 /**
  * Class DB
@@ -18,7 +19,7 @@ class DB
     /**
      * @var $qBuilder Qbuilder
      */
-    private $qBuilder;
+    public $qBuilder;
 
     public function __construct($settings)
     {
@@ -76,6 +77,29 @@ class DB
     }
 
     /**
+     * @param $rid string|ID
+     * @return Model
+     */
+    public static function byRid($rid)
+    {
+        $DB = new DB(DB::$settings);
+
+        if (get_class($rid) == 'PhpOrient\Protocols\Binary\Data\ID') {
+            $rid = $rid->__toString();
+        }
+
+        $DB->qBuilder->select($rid);
+
+        $QueryString = $DB->qBuilder->build();
+        $data = DB::command($QueryString);
+
+        $model = new Model();
+        $model->writeFromRecord(array_shift($data));
+
+        return $model;
+    }
+
+    /**
      * @param $item1 string
      * @param $item2 | $condition string
      * @return $this DB
@@ -101,15 +125,22 @@ class DB
     }
 
     /**
-     * @return ModelArray
+     * @param $params []
+     * @return array
      */
-    public function get()
+    public function get($params = 0)
     {
+        if ($params === 0) {
+            $params = ['in()', 'out()'];
+        }
+
+        $this->qBuilder->addSelectVar($params);
+
         $QueryString = $this->qBuilder->build();
         $data = DB::command($QueryString);
         $ret = new ModelArray();
-        $ret->setArray($data);
+        $ret->fromRecordArray($data);
 
-        return $ret;
+        return $ret->getArray();
     }
 }

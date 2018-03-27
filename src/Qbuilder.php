@@ -24,8 +24,23 @@ class Qbuilder
     public function select($from = 'V', $properties = [])
     {
         $this->action = 'select';
+        $this->selectVars = $properties;
         $this->actionParams[] = 'from ' . addslashes($from);
         return $this;
+    }
+
+    /**
+     * @param $var array|string
+     */
+    public function addSelectVar($var)
+    {
+        if (gettype($var) == 'string') {
+            $this->selectVars[] = $var;
+        } elseif (gettype($var) == 'array') {
+            foreach ($var as $item) {
+                $this->selectVars[] = $item;
+            }
+        }
     }
 
     /**
@@ -49,6 +64,18 @@ class Qbuilder
     public function build()
     {
         $ret = $this->action;
+
+        if ($ret == 'select') {
+            foreach ($this->selectVars as $var) {
+                $ret = $ret . ' ' . $var;
+                if ($var !== end($this->selectVars)) {
+                    $ret = $ret . ', ';
+                } else {
+                    $ret = $ret . ' ';
+                }
+            }
+        }
+
         foreach ($this->actionParams as $name => $value) {
             $ret = $ret . ' ' . $value;
         }

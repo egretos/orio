@@ -11,13 +11,18 @@ use \PhpOrient\Protocols\Binary\Data\Record;
  */
 class Model extends Record
 {
-    public $oIn;
-    public $oOut;
+    /**
+     * @var $in array
+     * @var $out array
+     */
+    public $in;
+    public $out;
 
     /**
      * @param $record Record
      */
-    public function WriteFromRecord($record) {
+    public function writeFromRecord($record)
+    {
         $this->rid = $record->rid;
         $this->oClass = $record->oClass;
         $this->version = $record->version;
@@ -25,17 +30,21 @@ class Model extends Record
         $this->decodeOData($record->oData);
     }
 
-    public function decodeOData($oData) {
+    public function decodeOData($oData)
+    {
         foreach ($oData as $key => $data) {
-            if(substr($key, 0, 3) == 'in_') {
+            if (substr($key, 0, 3) == 'in_') {
                 $item = new Link();
-                $item->WriteFromBag($data);
-                $this->oIn[] = $item;
-            }
-            if(substr($key, 0, 4) == 'out_') {
+                $item->writeFromBag($data);
+                $item->class = substr($key, 3);
+                $this->in[$item->class] = $item;
+            } elseif (substr($key, 0, 4) == 'out_') {
                 $item = new Link();
-                $item->WriteFromBag($data);
-                $this->oOut[] = $item;
+                $item->writeFromBag($data);
+                $item->class = substr($key, 4);
+                $this->out[$item->class] = $item;
+            } else {
+                $this->$key = $data;
             }
         }
     }

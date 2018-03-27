@@ -10,12 +10,12 @@ class ModelArray
 {
     private $models;
 
-    public function setArray($array)
+    public function fromRecordArray($array)
     {
         foreach ($array as $item) {
             $model = new Model();
 
-            $model->WriteFromRecord($item);
+            $model->writeFromRecord($item);
             $this->models[] = $model;
         }
     }
@@ -24,8 +24,17 @@ class ModelArray
     /**
      * @return array Model
      */
-    public function getArray() {
+    public function getArray()
+    {
         return $this->models;
     }
 
+    /**
+     * @param $number number of model
+     * @return Model
+     */
+    public function getModel($number)
+    {
+        return $this->models[$number];
+    }
 }

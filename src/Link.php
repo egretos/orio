@@ -16,17 +16,17 @@ class Link
     /**
      * @var $rid ID
      */
-    public $rid;
-    public $type;
+    public $rids;
+    public $class;
     public $size;
 
     /**
      * @param $bag Bag
      */
-    public function WriteFromBag($bag) {
-        $this->rid      = $bag->getRids();
-        $this->type     = $bag->getType();
-        $this->size     = $bag->getSize();
+    public function writeFromBag($bag)
+    {
+        $this->rids = $bag->getRids();
+        $this->size = $bag->getSize();
     }
 
 }
