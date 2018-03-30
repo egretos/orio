@@ -125,14 +125,39 @@ class DB
     }
 
     /**
+     * @param $link string class of edge
+     * @param $direction string in|out Direction of Link
+     * @return DB
+     */
+    public function linked($link, $direction = 'out')
+    {
+        if ($direction == 'out') {
+            $param = 'expand(out("' . htmlspecialchars($link) . '"))';
+        } else {
+            $param = 'expand(in("' . htmlspecialchars($link) . '"))';
+        }
+        $qb = new Qbuilder();
+        $qb
+            ->select(substr($this->qBuilder->actionParams['from'], 5))
+            ->addSelectVar($param);
+        $qb->conditions = $this->qBuilder->conditions;
+        $this->qBuilder->conditions = [];
+
+        $param = '('.$qb->build().')';
+        $this->qBuilder->select($param);
+
+        return $this;
+    }
+
+    /**
      * @param $params []
      * @return array
      */
     public function get($params = 0)
     {
-        if ($params === 0) {
-            $params = ['in()', 'out()'];
-        }
+        /*if ($params === 0) {
+            $params = ['*', 'in()', 'out()'];
+        }*/
 
         $this->qBuilder->addSelectVar($params);
 

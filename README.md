@@ -1,6 +1,6 @@
-# Orio
+# Orio v1.1.0
 
-Orio is a good [OrientDB](https://orientdb.com/) query builder based on the PHPOrient.
+Orio is a simple [OrientDB](https://orientdb.com/) query builder based on the PHPOrient.
 
 Tested on Orientdb version 2.1.3
 
@@ -41,31 +41,34 @@ $DBconfig = [
     'port' => 2424,
     'username' => 'username',
     'password' => 'password',
-    'name' => 'shema name',
+    'name' => 'DB name',
 ];
 DB::init($DBConfig);
 ```
 
 #### Simple query
-return array of [phporient](https://github.com/Ostico/PhpOrient) Records
+Return array of [phporient](https://github.com/Ostico/PhpOrient) Records
 ```php
 $result = DB::command("select from #12:0");
 ```
 
 #### Select by class
-return array of Orio Model 
+Return array of Orio Model 
 ```php
 $result = DB::select('User')->get();
 ```
 
-#### Getting with custom fields 
+#### Getting with custom fields
+The result will be all participants of the group "Developers" 
 ```php
 $result = DB::select('User')
     ->get('name'); //one field
 $result = DB::select('User')
     ->get(['name', 'email']); //many fields
 ```
-#### Getting by condition 
+
+#### Getting by condition
+Return array of Orio Model 
 ```php
 $result = DB::select('User')
     ->where('name', 'Joe')
@@ -76,8 +79,8 @@ $result = DB::select('User')
     ->get();    
 ```
 
-return of Orio Model
 #### Getting one record by rid 
+Return Orio Model. Usage:
 ```php
 use PhpOrient\Protocols\Binary\Data\ID
 
@@ -89,9 +92,37 @@ $rid = new ID( [ 'cluster' => 12, 'position' => 0 ] );
 // getting model
 $result = DB::byRid($rid);
 ```
-or
+
+You can write easier:
 ```php
 $result = DB::byRid('#12:0');   
+```
+
+#### Getting linked Records
+The result will be Dmitry's friends. 
+```php
+$result = DB::select('User')
+    ->where('name', 'Dmitry')
+    ->linked('Friend')
+    ->get();
+```
+
+The result will be all members of the group "Developers" 
+```php
+$result = DB::select('Group')
+    ->where('name', 'Developers')
+    ->linked('Member')
+    ->get();
+```
+
+The result will be friends of Dmitry, who is a member of the group of "Developers". 
+```php
+$result = DB::select('Group')
+    ->where('name', 'Developers')
+    ->linked('Member')
+    ->where('name', 'Dmitry')
+    ->linked('Friend')
+    ->get();
 ```
 
 # License
