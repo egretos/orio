@@ -34,7 +34,7 @@ require "vendor/autoload.php";
 use Orio\DB;
 ```
 
-#### Connecting to server
+### Connecting to server
 ```php
 $DBconfig = [
     'hostname' => '127.0.0.1',
@@ -46,20 +46,20 @@ $DBconfig = [
 DB::init($DBConfig);
 ```
 
-#### Simple query
+### Simple query
 Return array of [phporient](https://github.com/Ostico/PhpOrient) Records
 ```php
 $result = DB::command("select from #12:0");
 ```
 
-#### Select by class
+### Select by class
 Return array of Orio Model 
 ```php
 $result = DB::select('User')->get();
 ```
 
-#### Getting with custom fields
-The result will be all participants of the group "Developers" 
+### Getting with custom fields
+By default get() return all fields
 ```php
 $result = DB::select('User')
     ->get('name'); //one field
@@ -67,7 +67,7 @@ $result = DB::select('User')
     ->get(['name', 'email']); //many fields
 ```
 
-#### Getting by condition
+### Getting by condition
 Return array of Orio Model 
 ```php
 $result = DB::select('User')
@@ -79,7 +79,7 @@ $result = DB::select('User')
     ->get();    
 ```
 
-#### Getting one record by rid 
+### Getting one record by rid 
 Return Orio Model. Usage:
 ```php
 use PhpOrient\Protocols\Binary\Data\ID
@@ -98,7 +98,7 @@ You can write easier:
 $result = DB::byRid('#12:0');   
 ```
 
-#### Getting linked Records
+### Getting linked Records
 The result will be Dmitry's friends. 
 ```php
 $result = DB::select('User')
