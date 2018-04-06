@@ -133,7 +133,7 @@ class DB
     {
         if ($direction == 'out') {
             $param = 'expand(out("' . htmlspecialchars($link) . '"))';
-        } else {
+        } elseif ($direction == 'in') {
             $param = 'expand(in("' . htmlspecialchars($link) . '"))';
         }
         $qb = new Qbuilder();

@@ -1,7 +1,6 @@
 {
     "name": "egretos/orio",
     "description": "Orio is a good OrientDB query builder based on the PHPOrient.",
-    "version": "v1.1.0",
     "keywords": [
         "orientdb",
         "orient db",
@@ -20,7 +19,7 @@
     "require": {
         "php": ">=5.4.0",
         "psr/log": "~1.0",
-        "ostico/phporient": ">=1.2.5"
+        "ostico/phporient": ">=1.2.5:dev"
     },
     "autoload": {
         "psr-4": {"Orio\\": "src"}
