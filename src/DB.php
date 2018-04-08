@@ -168,4 +168,24 @@ class DB
 
         return $ret->getArray();
     }
+
+    /**
+     * @param $limit int
+     * @return DB
+     */
+    public function limit($limit)
+    {
+        $this->qBuilder->addFilter('limit', $limit);
+        return $this;
+    }
+
+    /**
+     * @return Model
+     */
+    public function one()
+    {
+        $this->qBuilder->addFilter('limit', 1);
+        $ret = $this->get()[0];
+        return $ret;
+    }
 }

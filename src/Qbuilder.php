@@ -60,6 +60,17 @@ class Qbuilder
     }
 
     /**
+     * @param $filter string
+     * @param $value string
+     * @return $this QBuilder
+     */
+    public function addFilter($filter, $value)
+    {
+        $this->filters[$filter] = $value;
+        return $this;
+    }
+
+    /**
      * @return string QueryString
      */
     public function build()
@@ -84,6 +95,11 @@ class Qbuilder
         foreach ($this->conditions as $condition) {
             $ret = $ret . $condition;
         }
+
+        foreach ($this->filters as $filter => $value) {
+            $ret = $ret . ' ' . $filter . ' ' . $value;
+        }
+
         return $ret;
     }
 }

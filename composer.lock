@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "76dc626d23609d5c4f6b3a54f07b964d",
+    "hash": "6135a395804e3909624873affa307453",
+    "content-hash": "274df85ec904cbc3a3f7a13f36fb24ac",
     "packages": [
         {
             "name": "ostico/phporient",
@@ -57,7 +58,7 @@
                 "orientdb",
                 "orientechnologies"
             ],
-            "time": "2016-11-26T19:30:26+00:00"
+            "time": "2016-11-26 19:30:26"
         },
         {
             "name": "psr/log",
@@ -104,7 +105,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         }
     ],
     "packages-dev": [],

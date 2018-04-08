@@ -98,6 +98,11 @@ You can write easier:
 $result = DB::byRid('#12:0');   
 ```
 
+or use select()->one()
+```php
+$result = DB::select('#12:0')->one();
+```
+
 ### Getting linked Records
 The result will be Dmitry's friends. 
 ```php
@@ -122,6 +127,17 @@ $result = DB::select('Group')
     ->linked('Member')
     ->where('name', 'Dmitry')
     ->linked('Friend')
+    ->get();
+```
+
+The result will be all users, who likes Dmitry`s friends, who is a member of the group of "Developers".
+```php
+$result = DB::select('Group')
+    ->where('name', 'Developers')
+    ->linked('Member')
+    ->where('name', 'Dmitry')
+    ->linked('Friend')
+    ->linked('Likes', 'in')
     ->get();
 ```
 
