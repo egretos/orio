@@ -2,6 +2,7 @@
 
 namespace Orio;
 
+use Orio\Query\Builder;
 use PhpOrient\PhpOrient;
 use PhpOrient\Protocols\Binary\Data\ID;
 
@@ -13,41 +14,48 @@ use PhpOrient\Protocols\Binary\Data\ID;
 
 class DB
 {
-    private static $client;
-    public static $settings;
+    private $client;
+    public  $settings;
 
-    /**
-     * @var $qBuilder Qbuilder
-     */
-    public $qBuilder;
-
-    public function __construct($settings)
+    public function __construct($settings = null)
     {
-        $this->qBuilder = new Qbuilder();
+        if ($settings) {
+            $this->init($settings);
+        }
     }
-
 
     /**
      * @return PhpOrient
      */
-    public static function getClient()
+    public function getClient()
     {
-        return DB::$client;
+        return $this->client;
     }
 
-    public static function init($settings)
+    public function init(array $settings)
     {
+        $options = [
+            'username',
+            'password',
+            'database',
+            'hostname',
+            'port',
+        ];
 
         $client = new PhpOrient();
-        $client->username = $settings['username'];
-        $client->password = $settings['password'];
-        $client->hostname = $settings['hostname'];
-        $client->port     = $settings['port'];
 
-        $client->dbOpen($settings['name'], $client->username, $client->password);
+        foreach ($options as $option) {
+            if (!key_exists($option, $settings)) {
+                throw new \InvalidArgumentException("$option not exists in settings array");
+            } else {
+                $client->$option = $settings[$option];
+            }
+        }
 
-        DB::$client = $client;
-        DB::$settings = $settings;
+        $client->dbOpen($settings['database'], $client->username, $client->password);
+
+        $this->client = $client;
+        $this->settings = $settings;
     }
 
 
@@ -55,12 +63,16 @@ class DB
      * @param $query string
      * @return array
      */
-    public static function command($query)
+    public function command($query)
     {
-        $client = DB::getClient();
-        $data = $client->query($query);
+        return $this
+            ->getClient()
+            ->query($query);
+    }
 
-        return $data;
+    public function query()
+    {
+        return new Builder();
     }
 
     /**
