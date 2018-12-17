@@ -8,7 +8,7 @@ use Orio\Query\Parameters\IParameter;
  * Class AbstractCommand
  * @package Orio\Query\Commands
  *
- * @property [Orio\Query\ModifiersIModifier] $modifiers
+ * @property IParameter[] $parameters
  */
 abstract class AbstractCommand implements ICommand
 {
@@ -27,10 +27,37 @@ abstract class AbstractCommand implements ICommand
      * @param IParameter $parameter
      * @return $this
      */
-    public function addParameter(IParameter $parameter)
+    public function pushParameter(IParameter $parameter)
     {
         $this->parameters[] = $parameter;
         return $this;
+    }
+
+    /**
+     * @param string|IParameter $parameter
+     * @return IParameter|false
+     */
+    public function popParameter($parameter = null)
+    {
+        if (!$parameter) {
+            return array_pop($this->parameters);
+        } else {
+            foreach ($this->parameters as $key => $myParameter) {
+                if ($myParameter instanceof $parameter) {
+                    unset($this->parameters[$key]);
+                    return $myParameter;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param IParameter $parameter
+     * @return bool
+     */
+    public static function isRequired(IParameter $parameter) {
+        return in_array(get_class($parameter), static::requiredParameters());
     }
 
     /**
@@ -41,31 +68,18 @@ abstract class AbstractCommand implements ICommand
         return (array)$this->parameters;
     }
 
-    /**
-     * @return IParameter[]
-     */
-    public function getRequiredParameters()
-    {
-        $found = [];
-        foreach ($this->requiredParameters() as $requiredParameter) {
-            foreach ($this->parameters as $parameter) {
-                if ($parameter instanceof $requiredParameter) {
-                    $found[] = $parameter;
-                }
-            }
-        }
-        return $found;
-    }
-
     public function build()
     {
         $sql = $this->getAlias();
 
-        $requiredParams = $this->getRequiredParameters();
-        foreach ($requiredParams as $requiredParam) {
-            $sql .= " {$requiredParam->build()}";
+        foreach ($this::parametersOrder() as $parameterClass) {
+            while ($parameter = $this->popParameter($parameterClass)) {
+                $sql .= " {$parameter->build()}";
+            }
         }
 
         return $sql;
     }
+
+
 }

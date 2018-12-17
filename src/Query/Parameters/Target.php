@@ -40,13 +40,10 @@ class Target implements IParameter
                 } else {
                     continue;
                 }
-
                 if( next( $this->target ) ) {
-                    $result .= ',';
+                    $result .= ', ';
                 }
-                $result .= ' ';
             }
-
             $result .= ']';
 
             return $result;

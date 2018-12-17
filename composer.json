@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.0",
         "psr/log": "~1.0",
         "ostico/phporient": ">=1.2.5"
     },
